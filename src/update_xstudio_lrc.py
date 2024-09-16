@@ -1,7 +1,7 @@
 # 假设 `logger` 已经正确配置
 from src.log import logger
 
-logger.info(__file__)
+
 
 
 def update_xstudio_lrc(sc_lrc=None, tgt_lrc=None):

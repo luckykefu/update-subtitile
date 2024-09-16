@@ -8,7 +8,6 @@ from src.update_srt_with_new_subtitles import (
 from src.log import logger
 import gradio as gr
 
-logger.info(__file__)
 
 with gr.Blocks() as demo:
     with gr.TabItem("Update Subtitle"):
@@ -46,15 +45,25 @@ with gr.Blocks() as demo:
             lrc2srt_btn = gr.Button("RUN")
             with gr.Row():
                 lrc_output1 = gr.Textbox(label="原lrc文本", lines=10, value="")
-                text_input1 = gr.Textbox(
-                    label="输入新lrc文本", lines=10, value="每行一个字幕"
-                )
+                text_input1 = gr.Textbox(label="原lrc文本", lines=10, value="")
+            with gr.Row():
+                lrc_output2 = gr.Textbox(label="新srt文本", lines=10, value="")
+                text_input2 = gr.Textbox(label="新srt文本", lines=10, value="")
+            with gr.Row():
                 srt_file_out = gr.File(label="输出srt文件", type="filepath")
                 text_file_output = gr.File(label="输出text文件", type="filepath")
+
             lrc2srt_btn.click(
                 fn=lrc2srt,
                 inputs=[lrc_file_path],
-                outputs=[lrc_output1, text_input1, srt_file_out, text_file_output],
+                outputs=[
+                    lrc_output1,
+                    text_input1,
+                    lrc_output2,
+                    text_input2,
+                    srt_file_out,
+                    text_file_output,
+                ],
             )
 
         with gr.TabItem("X studiolrc"):
@@ -67,17 +76,18 @@ with gr.Blocks() as demo:
                 fn=update_xstudio_lrc, inputs=[sc_lrc, tgt_lrc], outputs=[output_lrc]
             )
 
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Demo")
+    parser.add_argument(
+        "--server_name", type=str, default="localhost", help="server name"
+    )
+    parser.add_argument("--server_port", type=int, default=8080, help="server port")
+    parser.add_argument("--root_path", type=str, default=None, help="root path")
+    args = parser.parse_args()
 
-parser = argparse.ArgumentParser(description="Demo")
-parser.add_argument("--server_name", type=str, default="localhost", help="server name")
-parser.add_argument("--server_port", type=int, default=8080, help="server port")
-parser.add_argument("--root_path", type=str, default=None, help="root path")
-args = parser.parse_args()
-
-
-demo.launch(
-    server_name=args.server_name,
-    server_port=args.server_port,
-    root_path=args.root_path,
-    show_api=False,
-)
+    demo.launch(
+        server_name=args.server_name,
+        server_port=args.server_port,
+        root_path=args.root_path,
+        show_api=False,
+    )

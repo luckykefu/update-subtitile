@@ -2,7 +2,7 @@ import os
 import re
 from src.log import logger
 
-logger.info(__file__)
+
 
 
 def parse_lrc_time(line):
@@ -92,6 +92,38 @@ def write_files(srt_content, pure_text):
     return srt_file_path, text_file_path
 
 
+def extract_lyrics_from_lrc(lrc_content):
+    """
+    从 LRC 文件内容中提取纯文本歌词。
+
+    :param lrc_content: LRC 文件的内容。
+    :return: 纯文本歌词。
+    """
+    try:
+        # 日志记录开始
+        logger.info("Starting extract_lyrics_from_lrc function.")
+
+        # 使用正则表达式移除时间标签
+        logger.info("Extracting pure text from LRC content.")
+        time_pattern = re.compile(r"\[\d+:\d+\.\d+\]")
+        lyrics = []
+
+        lines = lrc_content.split("\n")
+        for line in lines:
+            # 移除时间标签
+            pure_text = time_pattern.sub("", line).strip()
+            if pure_text:
+                lyrics.append(pure_text)
+
+        # 日志记录结束
+        logger.info("extract_lyrics_from_lrc function completed successfully.")
+        return "\n".join(lyrics)
+
+    except Exception as e:
+        logger.error(f"An error occurred during LRC extraction: {e}")
+        raise
+
+
 def lrc2srt(lrc_file):
     """
     将 LRC 文件转换为 SRT 文件。
@@ -104,7 +136,7 @@ def lrc2srt(lrc_file):
         logger.info("Reading LRC file...")
         with open(lrc_file, "r", encoding="utf-8") as file:
             lrc_content = file.read()
-
+        lrc_pure_text = extract_lyrics_from_lrc(lrc_content)
         # 解析 LRC 文件
         logger.info("Parsing LRC file...")
         lines = lrc_content.split("\n")
@@ -119,7 +151,14 @@ def lrc2srt(lrc_file):
         srt_file_path, text_file_path = write_files(srt_content, texts)
 
         logger.info("LRC to SRT conversion complete.")
-        return "\n".join(srt_content), "\n".join(texts), srt_file_path, text_file_path
+        return (
+            lrc_content,
+            lrc_pure_text,
+            "\n".join(srt_content),
+            "\n".join(texts),
+            srt_file_path,
+            text_file_path,
+        )
 
     except Exception as e:
         logger.error(f"An error occurred during LRC to SRT conversion: {e}")

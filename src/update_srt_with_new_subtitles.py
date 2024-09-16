@@ -2,7 +2,7 @@ import os
 import pysrt
 from src.log import logger
 
-logger.info(__file__)
+
 
 
 def update_srt_with_new_subtitles(srt_file_path, text_input1):
