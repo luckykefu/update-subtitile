@@ -1,11 +1,12 @@
 import argparse
-from UpdateSubtitle.src.extract_text import extract_text
-from UpdateSubtitle.update_srt_with_new_subtitles import update_srt_with_new_subtitles
+from src.update_xstudio_lrc import update_xstudio_lrc
+from src.extract_text import extract_text
+from src.lrc2srt import lrc2srt
+from src.update_srt_with_new_subtitles import (
+    update_srt_with_new_subtitles,
+)
 from src.log import logger
 import gradio as gr
-from dotenv import load_dotenv
-
-load_dotenv()
 
 logger.info(__file__)
 
@@ -48,12 +49,12 @@ with gr.Blocks() as demo:
                 text_input1 = gr.Textbox(
                     label="输入新lrc文本", lines=10, value="每行一个字幕"
                 )
-                srt_file_out= gr.File(label="输出srt文件", type="filepath")
-                text_file_output=gr.File(label="输出text文件", type="filepath")
+                srt_file_out = gr.File(label="输出srt文件", type="filepath")
+                text_file_output = gr.File(label="输出text文件", type="filepath")
             lrc2srt_btn.click(
                 fn=lrc2srt,
                 inputs=[lrc_file_path],
-                outputs=[lrc_output1, text_input1,srt_file_out,text_file_output],
+                outputs=[lrc_output1, text_input1, srt_file_out, text_file_output],
             )
 
         with gr.TabItem("X studiolrc"):
@@ -80,5 +81,3 @@ demo.launch(
     root_path=args.root_path,
     show_api=False,
 )
-
-
