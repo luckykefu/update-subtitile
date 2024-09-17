@@ -1,5 +1,6 @@
 # 假设 `logger` 已经正确配置
-from src.log import logger
+from src.log import get_logger
+logger = get_logger(__name__)
 
 
 

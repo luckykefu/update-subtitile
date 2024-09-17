@@ -5,7 +5,8 @@ from src.lrc2srt import lrc2srt
 from src.update_srt_with_new_subtitles import (
     update_srt_with_new_subtitles,
 )
-from src.log import logger
+from src.log import get_logger
+logger = get_logger(__name__)
 import gradio as gr
 
 
