@@ -1,4 +1,5 @@
 import argparse
+import os
 from src.update_xstudio_lrc import update_xstudio_lrc
 from src.extract_text import extract_text
 from src.lrc2srt import lrc2srt
@@ -6,9 +7,12 @@ from src.update_srt_with_new_subtitles import (
     update_srt_with_new_subtitles,
 )
 from src.log import get_logger
+
 logger = get_logger(__name__)
 import gradio as gr
 
+script_dir = os.path.dirname(os.path.abspath(__file__))
+os.chdir(script_dir)
 
 with gr.Blocks() as demo:
     with gr.TabItem("Update Subtitle"):
