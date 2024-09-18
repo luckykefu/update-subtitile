@@ -1,6 +1,6 @@
 import os
 import re
-from src.log import get_logger
+from .log import get_logger
 logger = get_logger(__name__)
 
 
