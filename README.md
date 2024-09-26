@@ -2,12 +2,12 @@
 
 ```python
 
-conda create -n updatesubtitle python=3.12
+conda create -n updatesubtitle python -y
 
 conda activate updatesubtitle
 
-pip install -r requirements.txt
+pip install colorama gradio pysrt
 
-python UpdateSubtitle.py
+python UpdateSubtitleWebUI.py
 
 ```
